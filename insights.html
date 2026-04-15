@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Elias Holdings — Insights</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;background:#080c08;font-family:'Segoe UI',system-ui,sans-serif;color:#fff;overflow-x:hidden;}
+.sidebar{position:fixed;top:0;left:0;height:100vh;width:220px;background:rgba(4,8,4,0.97);backdrop-filter:blur(24px);border-right:1px solid rgba(132,204,22,0.1);display:flex;flex-direction:column;z-index:50;}
+.sidebar-logo{padding:20px 16px;border-bottom:1px solid rgba(132,204,22,0.08);display:flex;align-items:center;justify-content:center;}
+.sidebar-logo img{height:110px;width:auto;filter:invert(1) sepia(1) saturate(3) hue-rotate(60deg) brightness(1.2)}
+.nav-section{padding:14px 8px 4px}
+.nav-label{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(132,204,22,0.3);padding:0 10px;margin-bottom:6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:6px;font-size:12px;color:rgba(255,255,255,0.4);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all 0.2s;margin-bottom:1px;text-decoration:none;}
+.nav-item:hover{background:rgba(132,204,22,0.08);color:#fff}
+.nav-item.active{background:rgba(132,204,22,0.12);color:#84cc16}
+.nav-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.d-green{background:#84cc16}.d-blue{background:#3b82f6}.d-purple{background:#a855f7}.d-gray{background:rgba(255,255,255,0.2)}
+.sidebar-footer{margin-top:auto;padding:14px 16px;border-top:1px solid rgba(132,204,22,0.06);font-size:10px;color:rgba(255,255,255,0.18);line-height:1.8;}
+.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#84cc16;margin-right:5px;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.main{margin-left:220px;min-height:100vh;padding:26px 30px;}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.page-title h1{font-size:20px;font-weight:600;}
+.page-title p{font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px;}
+.refresh-btn{padding:6px 16px;background:rgba(132,204,22,0.15);border:1px solid rgba(132,204,22,0.3);border-radius:6px;color:#84cc16;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.refresh-btn:hover{background:rgba(132,204,22,0.25);}
+.section-title{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(132,204,22,0.5);margin-bottom:12px;margin-top:24px;}
+.insights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+.insight-card{background:rgba(255,255,255,0.03);border:1px solid rgba(132,204,22,0.08);border-radius:10px;padding:16px 18px;position:relative;overflow:hidden;}
+.insight-card.alert{border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.05);}
+.insight-card.warning{border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.05);}
+.insight-card.good{border-color:rgba(132,204,22,0.3);background:rgba(132,204,22,0.05);}
+.insight-card.info{border-color:rgba(59,130,246,0.3);background:rgba(59,130,246,0.05);}
+.insight-icon{font-size:20px;margin-bottom:8px;}
+.insight-title{font-size:11px;font-weight:600;color:#fff;margin-bottom:4px;}
+.insight-desc{font-size:10px;color:rgba(255,255,255,0.45);line-height:1.6;}
+.insight-value{font-size:22px;font-weight:700;margin-bottom:4px;}
+.alert .insight-value{color:#ef4444;}
+.warning .insight-value{color:#f59e0b;}
+.good .insight-value{color:#84cc16;}
+.info .insight-value{color:#60a5fa;}
+.badge-status{display:inline-block;padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+.badge-alert{background:rgba(239,68,68,0.15);color:#ef4444;}
+.badge-warning{background:rgba(245,158,11,0.15);color:#f59e0b;}
+.badge-good{background:rgba(132,204,22,0.15);color:#84cc16;}
+.badge-info{background:rgba(59,130,246,0.15);color:#60a5fa;}
+.rec-box{background:rgba(255,255,255,0.03);border:1px solid rgba(132,204,22,0.08);border-radius:10px;padding:16px 18px;margin-bottom:12px;}
+.rec-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.rec-num{width:24px;height:24px;border-radius:50%;background:rgba(132,204,22,0.15);color:#84cc16;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.rec-title{font-size:12px;font-weight:600;color:#fff;}
+.rec-body{font-size:11px;color:rgba(255,255,255,0.45);line-height:1.7;padding-left:34px;}
+.metric-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.metric{background:rgba(255,255,255,0.03);border:1px solid rgba(132,204,22,0.08);border-radius:10px;padding:14px 16px;text-align:center;}
+.metric-val{font-size:24px;font-weight:700;color:#84cc16;}
+.metric-lbl{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:4px;}
+.loading{text-align:center;padding:60px;color:rgba(255,255,255,0.3);font-size:12px;}
+.spinner{width:30px;height:30px;border:2px solid rgba(132,204,22,0.2);border-top-color:#84cc16;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><img src="data:image/png;base64,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" alt="Elias Holdings"/></div>
+  <div class="nav-section"><div class="nav-label">Platforms</div>
+    <a href="index.html" class="nav-item"><span class="nav-dot d-green"></span> Overview</a>
+    <a href="podio.html" class="nav-item"><span class="nav-dot d-blue"></span> Podio</a>
+    <a href="dialpad.html" class="nav-item"><span class="nav-dot d-green"></span> Dialpad</a>
+    <a href="batchdialer.html" class="nav-item"><span class="nav-dot d-purple"></span> BatchDialer</a>
+  </div>
+  <div class="nav-section"><div class="nav-label">Analytics</div>
+    <a href="insights.html" class="nav-item active"><span class="nav-dot d-gray"></span> Insights</a>
+  </div>
+  <div class="sidebar-footer"><span class="live-dot"></span> Live · 167.71.38.67<br>Auto-sync daily</div>
+</aside>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-title"><h1>Insights & Recommendations</h1><p id="lastUpdated">Analyzing data...</p></div>
+    <button class="refresh-btn" onclick="loadInsights()">↻ Refresh</button>
+  </div>
+
+  <div id="content"><div class="loading"><div class="spinner"></div>Loading insights...</div></div>
+</main>
+
+<script>
+const API_BATCH = 'http://167.71.38.67:5001';
+const API_PODIO = 'http://167.71.38.67:5002';
+
+function grade(val, good, warn) {
+  if (val >= good) return 'good';
+  if (val >= warn) return 'warning';
+  return 'alert';
+}
+
+function fmt(n) { return (n||0).toLocaleString(); }
+
+async function loadInsights() {
+  document.getElementById('content').innerHTML = '<div class="loading"><div class="spinner"></div>Analyzing data...</div>';
+
+  try {
+    const today = new Date();
+    const fmt_d = d => d.toISOString().split('T')[0];
+    const last7from = fmt_d(new Date(today - 7*86400000));
+    const last30from = fmt_d(new Date(today - 30*86400000));
+    const todayStr = fmt_d(today);
+
+    // Fetch batch dialer stats (7 days and 30 days)
+    const [b7, b30, podio] = await Promise.all([
+      fetch(`${API_BATCH}/api/stats/range?from=${last7from}&to=${todayStr}`).then(r=>r.json()).catch(()=>({})),
+      fetch(`${API_BATCH}/api/stats/range?from=${last30from}&to=${todayStr}`).then(r=>r.json()).catch(()=>({})),
+      fetch(`${API_PODIO}/api/podio/stats?from=2019-01-01&to=${todayStr}`).then(r=>r.json()).catch(()=>({}))
+    ]);
+
+    // --- CALCULATIONS ---
+    const totalCalls7    = b7.total || 0;
+    const answered7      = b7.answered || 0;
+    const answerRate7    = b7.real_answer_rate || b7.answer_rate || 0;
+    const avgDur7        = b7.avg_dur || '0:00';
+    const agents7        = b7.agents || [];
+
+    const totalCalls30   = b30.total || 0;
+    const answered30     = b30.answered || 0;
+    const answerRate30   = b30.real_answer_rate || b30.answer_rate || 0;
+
+    const totalLeads     = podio.total || 0;
+    const byState        = podio.by_state || [];
+    const bySource       = podio.by_source || [];
+    const byCategory     = podio.by_category || [];
+
+    // Weekly call volume trend
+    const callTrend = totalCalls30 > 0 ? ((totalCalls7 / (totalCalls30/4)) - 1) * 100 : 0;
+
+    // Top agent
+    const topAgent = agents7.sort((a,b) => b.answered - a.answered)[0] || {};
+    const topAgentRate = topAgent.rate || 0;
+
+    // Top lead source
+    const topSource = bySource[0] || {};
+    const topSourcePct = totalLeads > 0 ? (topSource.count/totalLeads*100) : 0;
+
+    // Top state concentration
+    const topState = byState[0] || {};
+    const topStatePct = totalLeads > 0 ? (topState.count/totalLeads*100) : 0;
+
+    // Follow-up specialist % (check if too high)
+    const followUp = byCategory.find(c => c.name && c.name.toLowerCase().includes('follow')) || {};
+    const followUpPct = totalLeads > 0 ? (followUp.count/totalLeads*100) : 0;
+
+    // Sold leads
+    const sold = byCategory.find(c => c.name && c.name.toLowerCase().includes('sold')) || {};
+    const soldPct = totalLeads > 0 ? (sold.count/totalLeads*100) : 0;
+
+    // --- BUILD INSIGHTS ---
+    const insights = [];
+
+    // Answer rate insight
+    const arGrade = grade(answerRate7, 80, 50);
+    insights.push({
+      type: arGrade,
+      icon: arGrade==='good'?'✅':arGrade==='warning'?'⚠️':'🚨',
+      badge: arGrade==='good'?'Good':'Needs Attention',
+      title: 'Answer Rate (Last 7 Days)',
+      value: answerRate7.toFixed(1)+'%',
+      desc: answerRate7 >= 80
+        ? `Strong answer rate. Agents are connecting well with prospects.`
+        : answerRate7 >= 50
+        ? `Answer rate is moderate. Consider calling at peak hours (9-11am, 1-3pm).`
+        : `Low answer rate. Review call timing, number spam scores, and agent availability.`
+    });
+
+    // Call volume trend
+    const trendGrade = callTrend >= 5 ? 'good' : callTrend >= -10 ? 'info' : 'warning';
+    insights.push({
+      type: trendGrade,
+      icon: callTrend >= 0 ? '📈' : '📉',
+      badge: callTrend >= 0 ? 'Trending Up' : 'Declining',
+      title: 'Weekly Call Volume Trend',
+      value: (callTrend >= 0 ? '+' : '') + callTrend.toFixed(1)+'%',
+      desc: `Last 7 days: ${fmt(totalCalls7)} calls vs ${fmt(Math.round(totalCalls30/4))} weekly avg (last 30 days).`
+    });
+
+    // Lead concentration in top state
+    const stateGrade = topStatePct > 80 ? 'warning' : topStatePct > 60 ? 'info' : 'good';
+    insights.push({
+      type: stateGrade,
+      icon: '🗺️',
+      badge: topStatePct > 80 ? 'High Concentration' : 'Diversified',
+      title: 'Geographic Concentration',
+      value: topStatePct.toFixed(1)+'%',
+      desc: `${topStatePct.toFixed(1)}% of all leads are in ${topState.name||'N/A'} (${fmt(topState.count)} leads). ${topStatePct > 80 ? 'Consider expanding to other states to reduce risk.' : 'Good geographic spread.'}`
+    });
+
+    // Top lead source dependency
+    const srcGrade = topSourcePct > 70 ? 'warning' : 'good';
+    insights.push({
+      type: srcGrade,
+      icon: '🎯',
+      badge: topSourcePct > 70 ? 'Source Risk' : 'Healthy Mix',
+      title: 'Lead Source Dependency',
+      value: topSourcePct.toFixed(1)+'%',
+      desc: `"${topSource.name||'N/A'}" accounts for ${topSourcePct.toFixed(1)}% of leads. ${topSourcePct > 70 ? 'Diversify lead sources to reduce dependency.' : 'Good mix of lead sources.'}`
+    });
+
+    // Follow-up specialist pipeline health
+    const fuGrade = followUpPct > 60 ? 'warning' : followUpPct > 30 ? 'info' : 'good';
+    insights.push({
+      type: fuGrade,
+      icon: '🔄',
+      badge: followUpPct > 60 ? 'Pipeline Bottleneck' : 'Normal',
+      title: 'Follow-Up Pipeline',
+      value: followUpPct.toFixed(1)+'%',
+      desc: `${followUpPct.toFixed(1)}% of leads are in Follow-Up Specialist category (${fmt(followUp.count||0)} leads). ${followUpPct > 60 ? 'High follow-up queue — consider increasing acquisition manager capacity.' : 'Pipeline is flowing well.'}`
+    });
+
+    // Conversion to sold
+    const soldGrade = soldPct > 5 ? 'good' : soldPct > 2 ? 'warning' : 'alert';
+    insights.push({
+      type: soldGrade,
+      icon: '💰',
+      badge: soldPct > 5 ? 'Strong' : soldPct > 2 ? 'Moderate' : 'Low',
+      title: 'Lead-to-Sold Conversion',
+      value: soldPct.toFixed(2)+'%',
+      desc: `${fmt(sold.count||0)} leads marked as Sold out of ${fmt(totalLeads)} total (${soldPct.toFixed(2)}%). ${soldPct > 5 ? 'Excellent conversion rate.' : soldPct > 2 ? 'Moderate conversion. Focus on follow-up quality.' : 'Low conversion rate. Review acquisition process.'}`
+    });
+
+    // --- RECOMMENDATIONS ---
+    const recs = [];
+    let rNum = 1;
+
+    if (answerRate7 < 50) {
+      recs.push({ title: 'Improve Answer Rate', body: `Current answer rate is ${answerRate7.toFixed(1)}%. Audit call times — try calling between 9-11 AM and 1-3 PM local time. Check if numbers are flagged as spam using a number reputation tool.` });
+    }
+    if (callTrend < -10) {
+      recs.push({ title: 'Increase Call Volume', body: `Call volume dropped ${Math.abs(callTrend).toFixed(1)}% vs last month average. Set daily call targets per agent and track adherence.` });
+    }
+    if (topStatePct > 80) {
+      recs.push({ title: 'Geographic Diversification', body: `Over 80% of leads are from ${topState.name}. Expand campaigns to neighboring states to reduce market concentration risk.` });
+    }
+    if (topSourcePct > 70) {
+      recs.push({ title: 'Diversify Lead Sources', body: `"${topSource.name}" dominates at ${topSourcePct.toFixed(1)}%. Add at least 2 new lead sources (direct mail, probate, MLS expired listings) to reduce dependency.` });
+    }
+    if (followUpPct > 60) {
+      recs.push({ title: 'Clear Follow-Up Backlog', body: `${followUpPct.toFixed(1)}% of leads are stuck in follow-up. Assign dedicated follow-up specialists and set a maximum 48h response SLA.` });
+    }
+    if (soldPct < 2) {
+      recs.push({ title: 'Review Acquisition Process', body: `Conversion rate is below 2%. Analyze lost deals — identify the most common objection and build a response script. Consider a closing specialist role.` });
+    }
+    if (recs.length === 0) {
+      recs.push({ title: 'Keep Up the Good Work!', body: `All key metrics are within healthy ranges. Continue monitoring weekly and focus on scaling what's working.` });
+    }
+
+    // --- RENDER ---
+    let html = '';
+
+    // Key metrics summary
+    html += `<div class="section-title">Key Metrics Summary</div>`;
+    html += `<div class="metric-row">
+      <div class="metric"><div class="metric-val">${fmt(totalLeads)}</div><div class="metric-lbl">Total Leads</div></div>
+      <div class="metric"><div class="metric-val">${fmt(totalCalls7)}</div><div class="metric-lbl">Calls (7 Days)</div></div>
+      <div class="metric"><div class="metric-val">${answerRate7.toFixed(1)}%</div><div class="metric-lbl">Answer Rate</div></div>
+      <div class="metric"><div class="metric-val">${soldPct.toFixed(2)}%</div><div class="metric-lbl">Conversion Rate</div></div>
+    </div>`;
+
+    // Insights
+    html += `<div class="section-title">Automated Insights</div>`;
+    html += `<div class="insights-grid">`;
+    insights.forEach(ins => {
+      html += `<div class="insight-card ${ins.type}">
+        <div class="insight-icon">${ins.icon}</div>
+        <div class="badge-status badge-${ins.type}">${ins.badge}</div>
+        <div class="insight-title">${ins.title}</div>
+        <div class="insight-value">${ins.value}</div>
+        <div class="insight-desc">${ins.desc}</div>
+      </div>`;
+    });
+    html += `</div>`;
+
+    // Recommendations
+    html += `<div class="section-title">Recommendations</div>`;
+    recs.forEach((r, i) => {
+      html += `<div class="rec-box">
+        <div class="rec-header"><div class="rec-num">${i+1}</div><div class="rec-title">${r.title}</div></div>
+        <div class="rec-body">${r.body}</div>
+      </div>`;
+    });
+
+    document.getElementById('content').innerHTML = html;
+    document.getElementById('lastUpdated').textContent = 'Updated · ' + new Date().toLocaleTimeString();
+
+  } catch(e) {
+    document.getElementById('content').innerHTML = '<div class="loading">Failed to load data. Check API connection.</div>';
+    console.error(e);
+  }
+}
+
+loadInsights();
+</script>
+</body>
+</html>
